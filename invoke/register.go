@@ -33,14 +33,14 @@ func Register(client *Client, admin *model.Identity, request *model.RegisterRequ
 
 	httpReq, err := http.NewRequest(constant.RequestMethod, fmt.Sprintf("%s%s", client.Url, constant.Register), bytes.NewBuffer(reqJson))
 
-	token, err := client.CreateAuthToken(admin, reqJson)
+	token, err := client.createAuthToken(admin, reqJson)
 	if err != nil {
 		return nil, err
 	}
 	httpReq.Header.Set("authorization", token)
 	httpReq.Header.Set("Content-Type", "application/json")
 
-	httpClient := &http.Client{Transport: client.GetTransport()}
+	httpClient := &http.Client{Transport: client.getTransport()}
 
 	resp, err := httpClient.Do(httpReq)
 	if err != nil {

@@ -90,7 +90,7 @@ func Enroll(client *Client, request *model.EnrollRequest) (*model.EnrollResponse
 	req.Header.Set("Content-Type", "application/json")
 	req.SetBasicAuth(request.EnrollID, request.Secret)
 
-	httpClient := &http.Client{Transport: client.GetTransport()}
+	httpClient := &http.Client{Transport: client.getTransport()}
 	resp, err := httpClient.Do(req)
 	if err != nil {
 

@@ -32,7 +32,7 @@ func (client *Client) Enroll(request *model.EnrollRequest) (*model.EnrollRespons
 	return Enroll(client, request)
 }
 
-func (client *Client) CreateAuthToken(identity *model.Identity, request []byte) (string, error) {
+func (client *Client) createAuthToken(identity *model.Identity, request []byte) (string, error) {
 
 	encPem := pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: identity.Cert.Raw})
 	encCert := base64.StdEncoding.EncodeToString(encPem)
@@ -46,7 +46,7 @@ func (client *Client) CreateAuthToken(identity *model.Identity, request []byte) 
 	return fmt.Sprintf("%s.%s", encCert, base64.StdEncoding.EncodeToString(sig)), nil
 }
 
-func (client *Client) GetTransport() *http.Transport {
+func (client *Client) getTransport() *http.Transport {
 	var tr *http.Transport
 	tr = &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
