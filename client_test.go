@@ -2,7 +2,6 @@ package loach
 
 import (
 	"crypto/x509/pkix"
-	"fmt"
 	"testing"
 
 	"github.com/learnergo/loach/model"
@@ -28,7 +27,7 @@ func Test_NewClient(t *testing.T) {
 
 func Test_LoadAdmin(t *testing.T) {
 	t.Log("Load test")
-	_, err := model.LoadIdentity(Admin_Key, Admin_Cert)
+	_, err := LoadIdentity(Admin_Key, Admin_Cert)
 	if err != nil {
 		t.Error("Failed to load admin") // 如果不是如预期的那么就报错
 	} else {
@@ -46,7 +45,7 @@ func Test_Register(t *testing.T) {
 		t.Log("Succeeded to init client")
 	}
 
-	admin, err := model.LoadIdentity(Admin_Key, Admin_Cert)
+	admin, err := LoadIdentity(Admin_Key, Admin_Cert)
 	if err != nil {
 		t.Error("Failed to load admin") // 如果不是如预期的那么就报错
 	} else {
