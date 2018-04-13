@@ -12,25 +12,19 @@ import (
 	"github.com/learnergo/loach/model"
 )
 
-func NewClient(path string) (*invoke.Client, error) {
+func NewClient(path string) (model.Client, error) {
 
 	config, err := config.NewClientConfig(path)
 	if err != nil {
 		return nil, err
 	}
 
-	var c crypto.Crypto
-	switch config.CryptoConfig.Family {
-	case "ecdsa":
-		c, err = crypto.NewCrypto(config.CryptoConfig)
-		if err != nil {
-			return nil, err
-		}
-	default:
-		return nil, errors.New("Error Crypto")
+	c, err := getCrypto(config.CryptoConfig)
+	if err != nil {
+		return nil, err
 	}
 
-	return &invoke.Client{
+	return &invoke.ClientImpl{
 		Url:    config.Url,
 		Crypto: c,
 		Config: *config,
@@ -60,4 +54,17 @@ func LoadIdentity(keyPath string, certPath string) (*model.Identity, error) {
 		return nil, err
 	}
 	return &model.Identity{Cert: cert, Key: key}, nil
+}
+
+func getCrypto(cc config.CryptoConfig) (crypto.Crypto, error) {
+	switch cc.Family {
+	case "ecdsa":
+		c, err := crypto.NewCrypto(cc)
+		if err != nil {
+			return nil, err
+		}
+		return c, nil
+	default:
+		return nil, errors.New("Error Crypto")
+	}
 }

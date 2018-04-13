@@ -13,26 +13,21 @@ import (
 	"github.com/learnergo/loach/model"
 )
 
-type CaClient interface {
-	Register(*model.Identity, *model.RegisterRequest) (string, error)
-	Enroll(*model.EnrollRequest) (*model.EnrollResponse, error)
-}
-
-type Client struct {
+type ClientImpl struct {
 	Url    string
 	Crypto crypto.Crypto
 	Config config.ClientConfig
 }
 
-func (client *Client) Register(admin *model.Identity, request *model.RegisterRequest) (*model.RegisterResponse, error) {
+func (client *ClientImpl) Register(admin *model.Identity, request *model.RegisterRequest) (*model.RegisterResponse, error) {
 	return Register(client, admin, request)
 }
 
-func (client *Client) Enroll(request *model.EnrollRequest) (*model.EnrollResponse, error) {
+func (client *ClientImpl) Enroll(request *model.EnrollRequest) (*model.EnrollResponse, error) {
 	return Enroll(client, request)
 }
 
-func (client *Client) createAuthToken(identity *model.Identity, request []byte) (string, error) {
+func (client *ClientImpl) createAuthToken(identity *model.Identity, request []byte) (string, error) {
 
 	encPem := pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: identity.Cert.Raw})
 	encCert := base64.StdEncoding.EncodeToString(encPem)
@@ -46,7 +41,7 @@ func (client *Client) createAuthToken(identity *model.Identity, request []byte) 
 	return fmt.Sprintf("%s.%s", encCert, base64.StdEncoding.EncodeToString(sig)), nil
 }
 
-func (client *Client) getTransport() *http.Transport {
+func (client *ClientImpl) getTransport() *http.Transport {
 	var tr *http.Transport
 	tr = &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},

@@ -52,7 +52,7 @@ type enrollmentResponseServerInfo struct {
 	CAChain string
 }
 
-func Enroll(client *Client, request *model.EnrollRequest) (*model.EnrollResponse, error) {
+func Enroll(client *ClientImpl, request *model.EnrollRequest) (*model.EnrollResponse, error) {
 	//create private key
 	key, err := client.Crypto.GenerateKey()
 	if err != nil {
