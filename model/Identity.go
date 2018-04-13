@@ -7,37 +7,11 @@ import (
 	"encoding/json"
 	"encoding/pem"
 	"errors"
-	"io/ioutil"
 )
 
 type Identity struct {
 	Key  interface{}
 	Cert *x509.Certificate
-}
-
-func LoadIdentity(keyPath string, certPath string) (*Identity, error) {
-	keyData, err := ioutil.ReadFile(keyPath)
-	if err != nil {
-		return nil, err
-	}
-
-	certData, err := ioutil.ReadFile(certPath)
-	if err != nil {
-		return nil, err
-	}
-
-	pCert, _ := pem.Decode(certData)
-	pKey, _ := pem.Decode(keyData)
-
-	cert, err := x509.ParseCertificate(pCert.Bytes)
-	if err != nil {
-		return nil, err
-	}
-	key, err := x509.ParsePKCS8PrivateKey(pKey.Bytes)
-	if err != nil {
-		return nil, err
-	}
-	return &Identity{Cert: cert, Key: key}, nil
 }
 
 func MarshalIdentity(identity *Identity) (string, error) {

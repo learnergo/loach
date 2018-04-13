@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"testing"
 
-	_ "github.com/learnergo/loach/invoke"
 	"github.com/learnergo/loach/model"
 )
 
