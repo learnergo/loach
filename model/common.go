@@ -3,12 +3,21 @@ package model
 import (
 	"crypto/x509"
 	"crypto/x509/pkix"
+	"fmt"
 )
 
 type Response struct {
 	Success  bool          `json:"success"`
 	Errors   []ResponseErr `json:"errors"`
 	Messages []string      `json:"messages"`
+}
+
+func (r Response) Error() error {
+	errors := ""
+	for _, e := range r.Errors {
+		errors += e.Message + ": "
+	}
+	return fmt.Errorf(errors)
 }
 
 type ResponseErr struct {

@@ -108,7 +108,7 @@ func Enroll(client *Client, request *model.EnrollRequest) (*model.EnrollResponse
 			return nil, err
 		}
 		if !enrResp.Success {
-			return nil, concatErrors(enrResp.Errors)
+			return nil, enrResp.Error()
 		}
 		cert, err := stringToCert(enrResp.Result.Cert)
 		if err != nil {

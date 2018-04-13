@@ -7,7 +7,6 @@ import (
 	"encoding/base64"
 	"encoding/pem"
 	"errors"
-	"fmt"
 
 	"github.com/learnergo/loach/model"
 )
@@ -20,14 +19,6 @@ func stringToCert(data string) (*x509.Certificate, error) {
 	}
 	pemResult, _ := pem.Decode(rawCert)
 	return x509.ParseCertificate(pemResult.Bytes)
-}
-
-func concatErrors(errs []model.ResponseErr) error {
-	errors := ""
-	for _, e := range errs {
-		errors += e.Message + ": "
-	}
-	return fmt.Errorf(errors)
 }
 
 func createCertificateRequest(request *model.CreateCsrRequest) ([]byte, error) {

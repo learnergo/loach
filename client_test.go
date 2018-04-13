@@ -75,10 +75,10 @@ func Test_Register(t *testing.T) {
 		t.Errorf("Failed Register,err=%s", err)
 	} else {
 		if !response.Success {
-			t.Errorf("Failed Register,err=%s", concatErrors(response.Errors))
+			t.Errorf("Failed Register,err=%s", response.Error())
 		}
 		if len(response.Errors) > 0 {
-			t.Errorf("Failed Register,err=%s", concatErrors(response.Errors))
+			t.Errorf("Failed Register,err=%s", response.Error())
 		}
 		result := response.Result.Secret
 		t.Logf("Register success,password=%s", result)
@@ -119,12 +119,4 @@ func Test_Enroll(t *testing.T) {
 		t.Logf("Enroll success,strIdentity=%s\ncertChain=%s", strIdentity, certChain)
 	}
 	t.Log("Enroll test")
-}
-
-func concatErrors(errs []model.ResponseErr) error {
-	errors := ""
-	for _, e := range errs {
-		errors += e.Message + ": "
-	}
-	return fmt.Errorf(errors)
 }
