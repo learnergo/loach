@@ -1,6 +1,8 @@
 package model
 
 type Client interface {
-	Register(*Identity, *RegisterRequest) (*RegisterResponse, error)
+	GetAdmin() (*Identity, error)
+
+	Register(*RegisterRequest) (*RegisterResponse, error)
 	Enroll(*EnrollRequest) (*EnrollResponse, error)
 }

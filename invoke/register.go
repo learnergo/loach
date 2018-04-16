@@ -12,7 +12,7 @@ import (
 	"github.com/learnergo/loach/model"
 )
 
-func Register(client *ClientImpl, admin *model.Identity, request *model.RegisterRequest) (*model.RegisterResponse, error) {
+func Register(client *ClientImpl, request *model.RegisterRequest) (*model.RegisterResponse, error) {
 	if request.EnrollID == "" {
 		return nil, errors.New("Missing EnrollmentID")
 	}
@@ -22,6 +22,7 @@ func Register(client *ClientImpl, admin *model.Identity, request *model.Register
 	if request.Type == "" {
 		return nil, errors.New("Missing Type")
 	}
+	admin, _ := client.GetAdmin()
 
 	if admin == nil {
 		return nil, errors.New("nil admin")

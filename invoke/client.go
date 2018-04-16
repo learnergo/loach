@@ -2,9 +2,11 @@ package invoke
 
 import (
 	"crypto/tls"
+	"crypto/x509"
 	"encoding/base64"
 	"encoding/pem"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/learnergo/loach/config"
@@ -19,8 +21,12 @@ type ClientImpl struct {
 	Config config.ClientConfig
 }
 
-func (client *ClientImpl) Register(admin *model.Identity, request *model.RegisterRequest) (*model.RegisterResponse, error) {
-	return Register(client, admin, request)
+func (client *ClientImpl) GetAdmin() (*model.Identity, error) {
+	return loadIdentity(client.Config.AdminKey, client.Config.AdminCert)
+}
+
+func (client *ClientImpl) Register(request *model.RegisterRequest) (*model.RegisterResponse, error) {
+	return Register(client, request)
 }
 
 func (client *ClientImpl) Enroll(request *model.EnrollRequest) (*model.EnrollResponse, error) {
@@ -47,4 +53,29 @@ func (client *ClientImpl) getTransport() *http.Transport {
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
 	return tr
+}
+
+func loadIdentity(keyPath string, certPath string) (*model.Identity, error) {
+	keyData, err := ioutil.ReadFile(keyPath)
+	if err != nil {
+		return nil, err
+	}
+
+	certData, err := ioutil.ReadFile(certPath)
+	if err != nil {
+		return nil, err
+	}
+
+	pCert, _ := pem.Decode(certData)
+	pKey, _ := pem.Decode(keyData)
+
+	cert, err := x509.ParseCertificate(pCert.Bytes)
+	if err != nil {
+		return nil, err
+	}
+	key, err := x509.ParsePKCS8PrivateKey(pKey.Bytes)
+	if err != nil {
+		return nil, err
+	}
+	return &model.Identity{Cert: cert, Key: key}, nil
 }
