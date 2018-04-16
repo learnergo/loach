@@ -57,7 +57,7 @@ type EnrollRequest struct {
 	Profile  string            `json:"profile,omitempty"`
 	Label    string            `json:"label,omitempty"`
 	CAName   string            `json:"caname,omitempty"`
-	Hosts    []string          `json:"hosts"`
+	Hosts    []string          `json:"hosts,omitempty"`
 	Attrs    []EnrollAttribute `json:"attr_reqs,omitempty"`
 }
 
