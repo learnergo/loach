@@ -59,7 +59,7 @@ func Test_Register(t *testing.T) {
 	attrs = append(attrs, model.RegisterAttribute{Name: "hf.Revoker", Value: "false"})
 
 	request := &model.RegisterRequest{
-		EnrolmentId:    "peer0.org1.example.com",
+		EnrollID:       "peer0.org1.example.com",
 		Type:           "peer",
 		Secret:         "adminpwd",
 		MaxEnrollments: -1,

@@ -26,7 +26,7 @@ type ResponseErr struct {
 }
 
 type RegisterRequest struct {
-	EnrolmentId    string              `json:"id"`
+	EnrollID       string              `json:"id"`
 	Type           string              `json:"type"`
 	Secret         string              `json:"secret,omitempty"`
 	MaxEnrollments int                 `json:"max_enrollments,omitempty"`

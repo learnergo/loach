@@ -13,7 +13,7 @@ import (
 )
 
 func Register(client *ClientImpl, admin *model.Identity, request *model.RegisterRequest) (*model.RegisterResponse, error) {
-	if request.EnrolmentId == "" {
+	if request.EnrollID == "" {
 		return nil, errors.New("Missing EnrollmentID")
 	}
 	if request.Affiliation == "" {
