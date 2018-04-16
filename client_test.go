@@ -18,22 +18,12 @@ func Test_NewClient(t *testing.T) {
 	t.Log("Start test")
 	_, err := NewClient(Path)
 	if err != nil {
-		t.Error("Failed to init client") // 如果不是如预期的那么就报错
+		t.Error("Failed to init client")
 	} else {
 		t.Error("Succeeded to init client")
 	}
 	t.Log("End test")
-}
 
-func Test_LoadAdmin(t *testing.T) {
-	t.Log("Load test")
-	_, err := LoadIdentity(Admin_Key, Admin_Cert)
-	if err != nil {
-		t.Error("Failed to load admin") // 如果不是如预期的那么就报错
-	} else {
-		t.Log("Succeeded to load admin")
-	}
-	t.Log("Load test")
 }
 
 func Test_Register(t *testing.T) {
@@ -43,13 +33,6 @@ func Test_Register(t *testing.T) {
 		t.Error("Failed to init client") // 如果不是如预期的那么就报错
 	} else {
 		t.Log("Succeeded to init client")
-	}
-
-	admin, err := LoadIdentity(Admin_Key, Admin_Cert)
-	if err != nil {
-		t.Error("Failed to load admin") // 如果不是如预期的那么就报错
-	} else {
-		t.Log("Succeeded to load admin")
 	}
 
 	t.Log("Build request params")
@@ -68,7 +51,7 @@ func Test_Register(t *testing.T) {
 	}
 
 	t.Log("Start Request")
-	response, err := client.Register(admin, request)
+	response, err := client.Register(request)
 	if err != nil {
 		t.Errorf("Failed Register,err=%s", err)
 	} else {
