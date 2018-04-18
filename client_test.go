@@ -8,10 +8,10 @@ import (
 )
 
 const (
-	Path string = "static\\file.yaml"
+	Path string = "static/file.yaml"
 
-	Admin_Key  string = "static\\admin.key"
-	Admin_Cert string = "static\\admin.crt"
+	Admin_Key  string = "static/admin.key"
+	Admin_Cert string = "static/admin.crt"
 )
 
 func Test_NewClient(t *testing.T) {
