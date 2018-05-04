@@ -12,7 +12,7 @@ import (
 	"github.com/learnergo/loach/model"
 )
 
-func Register(client *ClientImpl, request *model.RegisterRequest) (*model.RegisterResponse, error) {
+func register(client *ClientImpl, request *model.RegisterRequest) (*model.RegisterResponse, error) {
 	if request.EnrollID == "" {
 		return nil, errors.New("Missing EnrollmentID")
 	}

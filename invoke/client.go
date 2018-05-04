@@ -26,11 +26,11 @@ func (client *ClientImpl) GetAdmin() (*model.Identity, error) {
 }
 
 func (client *ClientImpl) Register(request *model.RegisterRequest) (*model.RegisterResponse, error) {
-	return Register(client, request)
+	return register(client, request)
 }
 
 func (client *ClientImpl) Enroll(request *model.EnrollRequest) (*model.EnrollResponse, error) {
-	return Enroll(client, request)
+	return enroll(client, request)
 }
 
 func (client *ClientImpl) createAuthToken(identity *model.Identity, request []byte) (string, error) {
