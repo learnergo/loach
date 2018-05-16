@@ -22,9 +22,10 @@ func NewClient(path string) (model.Client, error) {
 	}
 
 	return &invoke.ClientImpl{
-		Url:    config.Url,
-		Crypto: c,
-		Config: *config,
+		Url:        config.Url,
+		ServerName: config.ServerName,
+		Crypto:     c,
+		Config:     *config,
 	}, nil
 }
 

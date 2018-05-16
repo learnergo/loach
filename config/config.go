@@ -8,6 +8,7 @@ import (
 
 type ClientConfig struct {
 	Url          string `yaml:"url"`
+	ServerName   string `yaml:"server_Name"`
 	AdminKey     string `yaml:"admin_key"`
 	AdminCert    string `yaml:"admin_cert"`
 	CryptoConfig `yaml:"crypto"`

@@ -16,13 +16,18 @@ import (
 )
 
 type ClientImpl struct {
-	Url    string
-	Crypto crypto.Crypto
-	Config config.ClientConfig
+	Url        string
+	ServerName string
+	Crypto     crypto.Crypto
+	Config     config.ClientConfig
 }
 
 func (client *ClientImpl) GetAdmin() (*model.Identity, error) {
 	return loadIdentity(client.Config.AdminKey, client.Config.AdminCert)
+}
+
+func (client *ClientImpl) GetServer() (string, string) {
+	return client.Url, client.ServerName
 }
 
 func (client *ClientImpl) Register(request *model.RegisterRequest) (*model.RegisterResponse, error) {
