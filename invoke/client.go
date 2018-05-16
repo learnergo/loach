@@ -9,12 +9,12 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/learnergo/loach/config"
 	"github.com/learnergo/loach/crypto"
-
 	"github.com/learnergo/loach/model"
 )
 
-type ClientImpl struct {
+type clientImpl struct {
 	Url        string
 	ServerName string
 	Algorithm  string
@@ -23,23 +23,34 @@ type ClientImpl struct {
 	AdminCert  string
 }
 
-func (client *ClientImpl) GetAdmin() (*model.Identity, error) {
+func (client *clientImpl) GetAdmin() (*model.Identity, error) {
 	return loadIdentity(client.AdminKey, client.AdminCert)
 }
 
-func (client *ClientImpl) GetServer() (string, string) {
+func (client *clientImpl) GetServer() (string, string) {
 	return client.Url, client.ServerName
 }
 
-func (client *ClientImpl) Register(request *model.RegisterRequest) (*model.RegisterResponse, error) {
+func (client *clientImpl) Register(request *model.RegisterRequest) (*model.RegisterResponse, error) {
 	return register(client, request)
 }
 
-func (client *ClientImpl) Enroll(request *model.EnrollRequest) (*model.EnrollResponse, error) {
+func (client *clientImpl) Enroll(request *model.EnrollRequest) (*model.EnrollResponse, error) {
 	return enroll(client, request)
 }
 
-func (client *ClientImpl) createAuthToken(identity *model.Identity, request []byte) (string, error) {
+func NewClient(c crypto.Crypto, config *config.ClientConfig) (model.Client, error) {
+	return &clientImpl{
+		Url:        config.Url,
+		ServerName: config.ServerName,
+		Crypto:     c,
+		Algorithm:  config.Algorithm,
+		AdminKey:   config.AdminKey,
+		AdminCert:  config.AdminCert,
+	}, nil
+}
+
+func (client *clientImpl) createAuthToken(identity *model.Identity, request []byte) (string, error) {
 
 	encPem := pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: identity.Cert.Raw})
 	encCert := base64.StdEncoding.EncodeToString(encPem)
@@ -53,7 +64,7 @@ func (client *ClientImpl) createAuthToken(identity *model.Identity, request []by
 	return fmt.Sprintf("%s.%s", encCert, base64.StdEncoding.EncodeToString(sig)), nil
 }
 
-func (client *ClientImpl) getTransport() *http.Transport {
+func (client *clientImpl) getTransport() *http.Transport {
 	var tr *http.Transport
 	tr = &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},

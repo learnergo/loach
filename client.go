@@ -21,14 +21,7 @@ func NewClient(path string) (model.Client, error) {
 		return nil, err
 	}
 
-	return &invoke.ClientImpl{
-		Url:        config.Url,
-		ServerName: config.ServerName,
-		Crypto:     c,
-		Algorithm:  config.Algorithm,
-		AdminKey:   config.AdminKey,
-		AdminCert:  config.AdminCert,
-	}, nil
+	return invoke.NewClient(c, config)
 }
 
 func getCrypto(cc config.CryptoConfig) (crypto.Crypto, error) {
