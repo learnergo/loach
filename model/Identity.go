@@ -1,3 +1,6 @@
+/**
+Identity 模型
+**/
 package model
 
 import (

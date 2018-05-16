@@ -1,3 +1,6 @@
+/**
+配置操作，主要作用于配置解析
+**/
 package config
 
 import (

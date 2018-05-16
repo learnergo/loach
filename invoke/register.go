@@ -1,3 +1,6 @@
+/**
+register 过程实现
+**/
 package invoke
 
 import (

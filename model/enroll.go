@@ -1,3 +1,6 @@
+/**
+enroll 过程所用模型
+**/
 package model
 
 import (

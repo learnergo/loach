@@ -1,3 +1,6 @@
+/**
+通用模型
+**/
 package model
 
 import (

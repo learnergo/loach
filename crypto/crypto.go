@@ -1,3 +1,6 @@
+/**
+加密实现
+**/
 package crypto
 
 import (
@@ -17,6 +20,13 @@ import (
 	"github.com/learnergo/loach/config"
 )
 
+//接口
+type Crypto interface {
+	GenerateKey() (interface{}, error)
+	Sign([]byte, interface{}) ([]byte, error)
+	Hash([]byte) []byte
+}
+
 var ecCurveHalfOrders = map[elliptic.Curve]*big.Int{
 	elliptic.P224(): new(big.Int).Rsh(elliptic.P224().Params().N, 1),
 	elliptic.P256(): new(big.Int).Rsh(elliptic.P256().Params().N, 1),
@@ -24,13 +34,8 @@ var ecCurveHalfOrders = map[elliptic.Curve]*big.Int{
 	elliptic.P521(): new(big.Int).Rsh(elliptic.P521().Params().N, 1),
 }
 
-type Crypto interface {
-	GenerateKey() (interface{}, error)
-	Sign([]byte, interface{}) ([]byte, error)
-	Hash([]byte) []byte
-}
-
-type ECCrypto struct {
+//椭圆曲线加密实现
+type ecCrypto struct {
 	curve    elliptic.Curve
 	key      *ecdsa.PrivateKey
 	hashFunc func() hash.Hash
@@ -40,7 +45,7 @@ type eCDSASignature struct {
 	R, S *big.Int
 }
 
-func (ec *ECCrypto) GenerateKey() (interface{}, error) {
+func (ec *ecCrypto) GenerateKey() (interface{}, error) {
 	key, err := ecdsa.GenerateKey(ec.curve, rand.Reader)
 	if err != nil {
 		return nil, err
@@ -48,13 +53,13 @@ func (ec *ECCrypto) GenerateKey() (interface{}, error) {
 	return key, nil
 }
 
-func (ec *ECCrypto) Hash(data []byte) []byte {
+func (ec *ecCrypto) Hash(data []byte) []byte {
 	h := ec.hashFunc()
 	h.Write(data)
 	return h.Sum(nil)
 }
 
-func (ec *ECCrypto) Sign(data []byte, key interface{}) ([]byte, error) {
+func (ec *ecCrypto) Sign(data []byte, key interface{}) ([]byte, error) {
 	privateKey, yes := key.(*ecdsa.PrivateKey)
 	if !yes {
 		return nil, errors.New("Error Key Type")
@@ -82,7 +87,7 @@ func preventMalleability(k *ecdsa.PrivateKey, S *big.Int) {
 }
 
 func NewCrypto(config config.CryptoConfig) (Crypto, error) {
-	var ecCrypto *ECCrypto = &ECCrypto{}
+	var ecCrypto *ecCrypto = &ecCrypto{}
 
 	switch config.Algorithm {
 	case "P256-SHA256":

@@ -1,3 +1,6 @@
+/**
+一些常量定义
+**/
 package constant
 
 type RequestApi string

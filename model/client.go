@@ -1,3 +1,6 @@
+/**
+ca client 接口定义
+**/
 package model
 
 type Client interface {
