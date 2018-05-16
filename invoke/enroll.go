@@ -58,6 +58,7 @@ func enroll(client *ClientImpl, request *model.EnrollRequest) (*model.EnrollResp
 	if err != nil {
 		return nil, err
 	}
+	ski := getSki(key)
 	var hosts []string
 	if len(request.Hosts) == 0 {
 		parsedUrl, err := url.Parse(client.Url)
@@ -119,7 +120,7 @@ func enroll(client *ClientImpl, request *model.EnrollRequest) (*model.EnrollResp
 		if err != nil {
 			return nil, err
 		}
-		return &model.EnrollResponse{Identity: &model.Identity{Cert: cert, Key: key}, CertChain: certChain}, nil
+		return &model.EnrollResponse{Identity: &model.Identity{Cert: cert, Key: key, Ski: ski}, CertChain: certChain}, nil
 	}
 	return nil, fmt.Errorf("non 200 response: %v message is: %s", resp.StatusCode, string(body))
 }
