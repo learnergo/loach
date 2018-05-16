@@ -73,7 +73,7 @@ func enroll(client *ClientImpl, request *model.EnrollRequest) (*model.EnrollResp
 		Name:      request.Name,
 		Key:       key,
 		Hosts:     hosts,
-		Algorithm: client.Config.Algorithm,
+		Algorithm: client.Algorithm,
 	}
 
 	csr, err := createCertificateRequest(csrRequest)

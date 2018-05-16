@@ -25,7 +25,9 @@ func NewClient(path string) (model.Client, error) {
 		Url:        config.Url,
 		ServerName: config.ServerName,
 		Crypto:     c,
-		Config:     *config,
+		Algorithm:  config.Algorithm,
+		AdminKey:   config.AdminKey,
+		AdminCert:  config.AdminCert,
 	}, nil
 }
 

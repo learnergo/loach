@@ -9,7 +9,6 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/learnergo/loach/config"
 	"github.com/learnergo/loach/crypto"
 
 	"github.com/learnergo/loach/model"
@@ -18,12 +17,14 @@ import (
 type ClientImpl struct {
 	Url        string
 	ServerName string
+	Algorithm  string
 	Crypto     crypto.Crypto
-	Config     config.ClientConfig
+	AdminKey   string
+	AdminCert  string
 }
 
 func (client *ClientImpl) GetAdmin() (*model.Identity, error) {
-	return loadIdentity(client.Config.AdminKey, client.Config.AdminCert)
+	return loadIdentity(client.AdminKey, client.AdminCert)
 }
 
 func (client *ClientImpl) GetServer() (string, string) {
