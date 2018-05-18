@@ -16,7 +16,7 @@ const (
 
 func Test_NewClient(t *testing.T) {
 	t.Log("Start test")
-	_, err := NewClients(Path)
+	_, err := NewClient(Path)
 	if err != nil {
 		t.Error("Failed to init client,err=" + err.Error())
 	} else {
@@ -28,7 +28,7 @@ func Test_NewClient(t *testing.T) {
 
 func Test_Register(t *testing.T) {
 	t.Log("Register test")
-	clients, err := NewClients(Path)
+	client, err := NewClient(Path)
 	if err != nil {
 		t.Error("Failed to init client") // 如果不是如预期的那么就报错
 	} else {
@@ -51,7 +51,7 @@ func Test_Register(t *testing.T) {
 	}
 
 	t.Log("Start Request")
-	response, err := clients.ECertClient.Register(request)
+	response, err := client.Register(request)
 	if err != nil {
 		t.Errorf("Failed Register,err=%s", err)
 	} else {
@@ -70,7 +70,7 @@ func Test_Register(t *testing.T) {
 
 func Test_Enroll(t *testing.T) {
 	t.Log("Enroll test")
-	clients, err := NewClients(Path)
+	client, err := NewClient(Path)
 	if err != nil {
 		t.Error("Failed to init client") // 如果不是如预期的那么就报错
 	} else {
@@ -91,7 +91,7 @@ func Test_Enroll(t *testing.T) {
 			CommonName:         "peer0.org1.example.com",
 		},
 	}
-	response, err := clients.ECertClient.Enroll(request)
+	response, err := client.Enroll(request)
 	if err != nil {
 		t.Errorf("Failed Enroll,err=%s", err)
 	} else {
